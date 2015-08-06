@@ -263,6 +263,10 @@ func (p *ParamAnalyzer) parseDataType(path string, child *gen.ActionParam) gen.D
 				map[string]interface{}{}, &s)
 			res = &gen.ArrayDataType{p}
 		}
+	case "SourceUpload":
+		res = new(gen.SourceUploadDataType)
+	case "FileUpload":
+		res = new(gen.UploadDataType)
 	case "Enumerable":
 		res = new(gen.EnumerableDataType)
 	case "Hash":

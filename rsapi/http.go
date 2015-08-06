@@ -23,6 +23,10 @@ type FileUpload struct {
 	Reader   io.Reader // Backing reader
 }
 
+type SourceUpload struct {
+	Reader io.Reader
+}
+
 // BuildHTTPRequest creates a http.Request given all its parts.
 // If any member of the Payload field is of type io.Reader then the resulting request has a
 // multipart body where each member of type io.Reader is mapped to a single part and all other
@@ -69,12 +73,21 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 	var body io.Reader
 	var isMultipart bool
 	var boundary string
+	var isSourceUpload bool
 	if payload != nil {
 		var fields io.Reader
 		var uploads []*FileUpload
+		var sourceUpload *SourceUpload
 		for k, v := range payload {
 			if mpart, ok := v.(*FileUpload); ok {
 				uploads = append(uploads, mpart)
+				delete(payload, k)
+			}
+		}
+		for k, v := range payload {
+			if mpart, ok := v.(*SourceUpload); ok {
+				isSourceUpload = true
+				sourceUpload = mpart
 				delete(payload, k)
 			}
 		}
@@ -114,6 +127,8 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 			}
 			boundary = w.Boundary()
 			body = &buffer
+		} else if isSourceUpload {
+			body = sourceUpload.Reader
 		} else {
 			body = fields
 		}
@@ -127,6 +142,8 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 	}
 	if isMultipart {
 		req.Header.Set("Content-Type", fmt.Sprintf("multipart/form-data; boundary=%s", boundary))
+	} else if isSourceUpload {
+		req.Header.Set("Content-Type", "text/plain")
 	} else {
 		req.Header.Set("Content-Type", "application/json")
 	}

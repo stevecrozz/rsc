@@ -8912,6 +8912,50 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 	return nil
 }
 
+// POST /api/right_scripts
+//
+// Creates RightScript
+// Required parameters:
+// right_script
+func (loc *RightScriptLocator) Create(rightScript *RightScriptParam2) (*RightScriptLocator, error) {
+	var res *RightScriptLocator
+	if rightScript == nil {
+		return res, fmt.Errorf("rightScript is required")
+	}
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{
+		"right_script": rightScript,
+	}
+	uri, err := loc.ActionPath("RightScript", "create")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &RightScriptLocator{Href(location), loc.api}, nil
+	}
+}
+
 // GET /api/right_scripts
 //
 // Lists RightScripts.
@@ -9075,9 +9119,14 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 // PUT /api/right_scripts/:id/source
 //
 // Updates the source of the given RightScript
-func (loc *RightScriptLocator) UpdateSource() error {
-	var params rsapi.APIParams
-	var p rsapi.APIParams
+// Required parameters:
+// file
+func (loc *RightScriptLocator) UpdateSource(file *rsapi.SourceUpload) error {
+	var params rsapi.ApiParams
+	var p rsapi.ApiParams
+	p = rsapi.ApiParams{
+		"file": file,
+	}
 	uri, err := loc.ActionPath("RightScript", "update_source")
 	if err != nil {
 		return err
@@ -14658,6 +14707,7 @@ type RightScriptParam struct {
 type RightScriptParam2 struct {
 	Description string `json:"description,omitempty"`
 	Name        string `json:"name,omitempty"`
+	Source      string `json:"source,omitempty"`
 }
 
 type RouteParam struct {
