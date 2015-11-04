@@ -8922,16 +8922,16 @@ func (loc *RightScriptLocator) Create(rightScript *RightScriptParam2) (*RightScr
 	if rightScript == nil {
 		return res, fmt.Errorf("rightScript is required")
 	}
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"right_script": rightScript,
 	}
 	uri, err := loc.ActionPath("RightScript", "create")
 	if err != nil {
 		return res, err
 	}
-	req, err := loc.api.BuildHTTPRequest(uri.HttpMethod, uri.Path, APIVersion, params, p)
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
 	if err != nil {
 		return res, err
 	}
@@ -9083,7 +9083,7 @@ func (loc *RightScriptLocator) ShowSource() error {
 // Updates RightScript name/description
 // Required parameters:
 // right_script
-func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
+func (loc *RightScriptLocator) Update(rightScript *RightScriptParam3) error {
 	if rightScript == nil {
 		return fmt.Errorf("rightScript is required")
 	}
@@ -9122,9 +9122,9 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam2) error {
 // Required parameters:
 // file
 func (loc *RightScriptLocator) UpdateSource(file *rsapi.SourceUpload) error {
-	var params rsapi.ApiParams
-	var p rsapi.ApiParams
-	p = rsapi.ApiParams{
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
 		"file": file,
 	}
 	uri, err := loc.ActionPath("RightScript", "update_source")
@@ -14705,6 +14705,12 @@ type RightScriptParam struct {
 }
 
 type RightScriptParam2 struct {
+	Description string `json:"description,omitempty"`
+	Name        string `json:"name,omitempty"`
+	Source      string `json:"source,omitempty"`
+}
+
+type RightScriptParam3 struct {
 	Description string `json:"description,omitempty"`
 	Name        string `json:"name,omitempty"`
 	Source      string `json:"source,omitempty"`

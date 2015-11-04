@@ -8834,7 +8834,7 @@ Required parameters:
 	right_script`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
-						HttpMethod: "POST",
+						HTTPMethod: "POST",
 						Pattern:    "/api/right_scripts",
 						Variables:  []string{},
 						Regexp:     regexp.MustCompile(`^/api/right_scripts$`),
@@ -8866,7 +8866,7 @@ Required parameters:
 						NonBlank:    true,
 					},
 				},
-				ApiParams: []*metadata.ActionParam{
+				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "right_script",
 						Description: ``,
@@ -9026,7 +9026,7 @@ Required parameters:
 					&metadata.ActionParam{
 						Name:        "right_script",
 						Description: ``,
-						Type:        "*RightScriptParam2",
+						Type:        "*RightScriptParam3",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
