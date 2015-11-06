@@ -265,7 +265,7 @@ func (p *ParamAnalyzer) parseDataType(path string, child *gen.ActionParam) gen.D
 		}
 	case "SourceUpload":
 		res = new(gen.SourceUploadDataType)
-	case "FileUpload":
+	case "FileUpload", "Tempfile":
 		res = new(gen.UploadDataType)
 	case "Enumerable":
 		res = new(gen.EnumerableDataType)

@@ -8829,7 +8829,7 @@ Required parameters:
 
 			&metadata.Action{
 				Name: "create",
-				Description: `Creates RightScript
+				Description: `No description provided for create.
 Required parameters:
 	right_script`,
 				PathPatterns: []*metadata.PathPattern{
@@ -8843,7 +8843,7 @@ Required parameters:
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
 						Name:        "right_script[description]",
-						Description: `The description for the RightScript`,
+						Description: `The description of the RightScript to be created.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -8851,18 +8851,18 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "right_script[source]",
-						Description: `Source of the RightScript`,
+						Description: `The script source to be created.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   false,
+						Mandatory:   true,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
 						Name:        "right_script[name]",
-						Description: `The name for the RightScript`,
+						Description: `The name of the RightScript to be created.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
-						Mandatory:   false,
+						Mandatory:   true,
 						NonBlank:    true,
 					},
 				},
@@ -9007,7 +9007,7 @@ Required parameters:
 					},
 					&metadata.ActionParam{
 						Name:        "right_script[source]",
-						Description: `Source of the RightScript`,
+						Description: `The script source to be updated.`,
 						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
@@ -9035,10 +9035,8 @@ Required parameters:
 			},
 
 			&metadata.Action{
-				Name: "update_source",
-				Description: `Updates the source of the given RightScript
-Required parameters:
-	file`,
+				Name:        "update_source",
+				Description: `Updates the source of the given RightScript`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "PUT",
@@ -9047,11 +9045,40 @@ Required parameters:
 						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)/source$`),
 					},
 				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+		},
+	},
+	"RightScriptAttachment": &metadata.Resource{
+		Name:        "RightScriptAttachment",
+		Description: ``,
+		Actions: []*metadata.Action{
+			&metadata.Action{
+				Name: "create",
+				Description: `Required parameters:
+	right_script_attachment`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "POST",
+						Pattern:    "/api/right_scripts/%s/attachments",
+						Variables:  []string{"right_script_id"},
+						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)/attachments$`),
+					},
+				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "file",
-						Description: ``,
-						Type:        "sourcefile",
+						Name:        "right_script_attachment[content]",
+						Description: `The content of the RightScript attachment to be created.`,
+						Type:        "file",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script_attachment[name]",
+						Description: `The file name of the RightScript attachment to be created.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -9059,9 +9086,137 @@ Required parameters:
 				},
 				APIParams: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "file",
+						Name:        "right_script_attachment",
 						Description: ``,
-						Type:        "*rsapi.SourceUpload",
+						Type:        "*RightScriptAttachmentParam",
+						Location:    metadata.PayloadParam,
+						Mandatory:   true,
+						NonBlank:    true,
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "destroy",
+				Description: ``,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "DELETE",
+						Pattern:    "/api/right_scripts/%s/attachments/%s",
+						Variables:  []string{"right_script_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)/attachments/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name: "index",
+				Description: `Lists RightScript attachments.
+Optional parameters:
+	filter
+	view`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/right_scripts/%s/attachments",
+						Variables:  []string{"right_script_id"},
+						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)/attachments$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"name"},
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "filter[]",
+						Description: ``,
+						Type:        "[]string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"name"},
+					},
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default"},
+					},
+				},
+			},
+
+			&metadata.Action{
+				Name:        "show",
+				Description: `Displays information about a single RightScript attachment.`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "GET",
+						Pattern:    "/api/right_scripts/%s/attachments/%s",
+						Variables:  []string{"right_script_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)/attachments/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
+			},
+
+			&metadata.Action{
+				Name: "update",
+				Description: `Required parameters:
+	right_script_attachment`,
+				PathPatterns: []*metadata.PathPattern{
+					&metadata.PathPattern{
+						HTTPMethod: "PUT",
+						Pattern:    "/api/right_scripts/%s/attachments/%s",
+						Variables:  []string{"right_script_id", "id"},
+						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)/attachments/([^/]+)$`),
+					},
+				},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "right_script_attachment[content]",
+						Description: `The new content for the RightScript attachment.`,
+						Type:        "file",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+					&metadata.ActionParam{
+						Name:        "right_script_attachment[name]",
+						Description: `The new name for the RightScript attachment.`,
+						Type:        "string",
+						Location:    metadata.PayloadParam,
+						Mandatory:   false,
+						NonBlank:    true,
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "right_script_attachment",
+						Description: ``,
+						Type:        "*RightScriptAttachmentParam",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,

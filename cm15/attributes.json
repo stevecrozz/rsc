@@ -37,6 +37,7 @@
 	"detail_size": "int",
 	"device": "string",
 	"device_id": "string",
+	"digest": "string",
 	"direction": "string",
 	"discovery_hint": "string",
 	"display_name": "string",

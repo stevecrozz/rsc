@@ -8914,7 +8914,7 @@ func (loc *RightScriptLocator) Commit(rightScript *RightScriptParam) error {
 
 // POST /api/right_scripts
 //
-// Creates RightScript
+// No description provided for create.
 // Required parameters:
 // right_script
 func (loc *RightScriptLocator) Create(rightScript *RightScriptParam2) (*RightScriptLocator, error) {
@@ -9119,15 +9119,243 @@ func (loc *RightScriptLocator) Update(rightScript *RightScriptParam3) error {
 // PUT /api/right_scripts/:id/source
 //
 // Updates the source of the given RightScript
+func (loc *RightScriptLocator) UpdateSource() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("RightScript", "update_source")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+/******  RightScriptAttachment ******/
+
+type RightScriptAttachment struct {
+	CreatedAt *RubyTime           `json:"created_at,omitempty"`
+	Digest    string              `json:"digest,omitempty"`
+	Id        string              `json:"id,omitempty"`
+	Links     []map[string]string `json:"links,omitempty"`
+	Name      string              `json:"name,omitempty"`
+	Size      string              `json:"size,omitempty"`
+	UpdatedAt *RubyTime           `json:"updated_at,omitempty"`
+}
+
+// Locator returns a locator for the given resource
+func (r *RightScriptAttachment) Locator(api *API) *RightScriptAttachmentLocator {
+	for _, l := range r.Links {
+		if l["rel"] == "self" {
+			return api.RightScriptAttachmentLocator(l["href"])
+		}
+	}
+	return nil
+}
+
+//===== Locator
+
+// RightScriptAttachmentLocator exposes the RightScriptAttachment resource actions.
+type RightScriptAttachmentLocator struct {
+	Href
+	api *API
+}
+
+// RightScriptAttachmentLocator builds a locator from the given href.
+func (api *API) RightScriptAttachmentLocator(href string) *RightScriptAttachmentLocator {
+	return &RightScriptAttachmentLocator{Href(href), api}
+}
+
+//===== Actions
+
+// POST /api/right_scripts/:right_script_id/attachments
+//
 // Required parameters:
-// file
-func (loc *RightScriptLocator) UpdateSource(file *rsapi.SourceUpload) error {
+// right_script_attachment
+func (loc *RightScriptAttachmentLocator) Create(rightScriptAttachment *RightScriptAttachmentParam) (*RightScriptAttachmentLocator, error) {
+	var res *RightScriptAttachmentLocator
+	if rightScriptAttachment == nil {
+		return res, fmt.Errorf("rightScriptAttachment is required")
+	}
 	var params rsapi.APIParams
 	var p rsapi.APIParams
 	p = rsapi.APIParams{
-		"file": file,
+		"right_script_attachment": rightScriptAttachment,
 	}
-	uri, err := loc.ActionPath("RightScript", "update_source")
+	uri, err := loc.ActionPath("RightScriptAttachment", "create")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	location := resp.Header.Get("Location")
+	if len(location) == 0 {
+		return res, fmt.Errorf("Missing location header in response")
+	} else {
+		return &RightScriptAttachmentLocator{Href(location), loc.api}, nil
+	}
+}
+
+// DELETE /api/right_scripts/:right_script_id/attachments/:id
+//
+
+func (loc *RightScriptAttachmentLocator) Destroy() error {
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("RightScriptAttachment", "destroy")
+	if err != nil {
+		return err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	return nil
+}
+
+// GET /api/right_scripts/:right_script_id/attachments
+//
+// Lists RightScript attachments.
+// Optional parameters:
+// filter
+// view
+func (loc *RightScriptAttachmentLocator) Index(options rsapi.APIParams) ([]*RightScriptAttachment, error) {
+	var res []*RightScriptAttachment
+	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var filterOpt = options["filter"]
+	if filterOpt != nil {
+		params["filter[]"] = filterOpt
+	}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("RightScriptAttachment", "index")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// GET /api/right_scripts/:right_script_id/attachments/:id
+//
+// Displays information about a single RightScript attachment.
+func (loc *RightScriptAttachmentLocator) Show() (*RightScriptAttachment, error) {
+	var res *RightScriptAttachment
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	uri, err := loc.ActionPath("RightScriptAttachment", "show")
+	if err != nil {
+		return res, err
+	}
+	req, err := loc.api.BuildHTTPRequest(uri.HTTPMethod, uri.Path, APIVersion, params, p)
+	if err != nil {
+		return res, err
+	}
+	resp, err := loc.api.PerformRequest(req)
+	if err != nil {
+		return res, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode < 200 || resp.StatusCode > 299 {
+		respBody, _ := ioutil.ReadAll(resp.Body)
+		sr := string(respBody)
+		if sr != "" {
+			sr = ": " + sr
+		}
+		return res, fmt.Errorf("invalid response %s%s", resp.Status, sr)
+	}
+	defer resp.Body.Close()
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return res, err
+	}
+	err = json.Unmarshal(respBody, &res)
+	return res, err
+}
+
+// PUT /api/right_scripts/:right_script_id/attachments/:id
+//
+// Required parameters:
+// right_script_attachment
+func (loc *RightScriptAttachmentLocator) Update(rightScriptAttachment *RightScriptAttachmentParam) error {
+	if rightScriptAttachment == nil {
+		return fmt.Errorf("rightScriptAttachment is required")
+	}
+	var params rsapi.APIParams
+	var p rsapi.APIParams
+	p = rsapi.APIParams{
+		"right_script_attachment": rightScriptAttachment,
+	}
+	uri, err := loc.ActionPath("RightScriptAttachment", "update")
 	if err != nil {
 		return err
 	}
@@ -14698,6 +14926,11 @@ type RepositoryParam2 struct {
 	Name            string       `json:"name,omitempty"`
 	Source          string       `json:"source,omitempty"`
 	SourceType      string       `json:"source_type,omitempty"`
+}
+
+type RightScriptAttachmentParam struct {
+	Content *rsapi.FileUpload `json:"content,omitempty"`
+	Name    string            `json:"name,omitempty"`
 }
 
 type RightScriptParam struct {
