@@ -27,6 +27,24 @@ type SourceUpload struct {
 	Reader io.Reader
 }
 
+// This will take a hash (or multi-level hash) of APIParams and extract
+// out all the multipart file uploads and put them in an array. The recursion
+// is needed as CM API 1.5 and SS both use this, but SS has all its params
+// on the top level while CM API 1.5 has the resource name on the top level
+// with the params being one level down the tree.
+func extractUploads(payload *APIParams) (uploads []*FileUpload) {
+	for k, v := range *payload {
+		if mpart, ok := v.(*FileUpload); ok {
+			uploads = append(uploads, mpart)
+			delete(*payload, k)
+		} else if child_params, ok := v.(APIParams); ok {
+			child_uploads := extractUploads(&child_params)
+			uploads = append(uploads, child_uploads...)
+		}
+	}
+	return uploads
+}
+
 // BuildHTTPRequest creates a http.Request given all its parts.
 // If any member of the Payload field is of type io.Reader then the resulting request has a
 // multipart body where each member of type io.Reader is mapped to a single part and all other
@@ -76,14 +94,9 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 	var isSourceUpload bool
 	if payload != nil {
 		var fields io.Reader
-		var uploads []*FileUpload
+		//var uploads []*FileUpload
 		var sourceUpload *SourceUpload
-		for k, v := range payload {
-			if mpart, ok := v.(*FileUpload); ok {
-				uploads = append(uploads, mpart)
-				delete(payload, k)
-			}
-		}
+		uploads := extractUploads(&payload)
 		for k, v := range payload {
 			if mpart, ok := v.(*SourceUpload); ok {
 				isSourceUpload = true
@@ -103,13 +116,27 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 			var buffer bytes.Buffer
 			w := multipart.NewWriter(&buffer)
 			if len(payload) > 0 {
-				p, err := w.CreateFormField("payload")
-				if err != nil {
-					return nil, fmt.Errorf("failed to create multipart payload: %s", err.Error())
-				}
-				_, err = io.Copy(p, fields)
-				if err != nil {
-					return nil, fmt.Errorf("failed to copy multipart payload: %s", err.Error())
+				for k, v := range payload {
+					if children, ok := v.(APIParams); ok {
+						for k2, v2 := range children {
+							if v2s, ok := v2.(string); ok {
+								compound_key := fmt.Sprintf("%s[%s]", k, k2)
+								err := w.WriteField(compound_key, v2s)
+								if err != nil {
+									return nil, fmt.Errorf("failed to create multipart form section: %s", err.Error())
+								}
+							} else {
+								return nil, fmt.Errorf("unknown type for multipart form section for %#v", v2)
+							}
+						}
+					} else if vs, ok := v.(string); ok {
+						err := w.WriteField(k, vs)
+						if err != nil {
+							return nil, fmt.Errorf("failed to create multipart form section: %s", err.Error())
+						}
+					} else {
+						return nil, fmt.Errorf("unknown type for multipart form section for %#v", v)
+					}
 				}
 			}
 			for _, u := range uploads {
