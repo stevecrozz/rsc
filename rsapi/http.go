@@ -116,6 +116,9 @@ func (a *API) BuildHTTPRequest(verb, path, version string, params, payload APIPa
 			var buffer bytes.Buffer
 			w := multipart.NewWriter(&buffer)
 			if len(payload) > 0 {
+				// Handle payload params. Each payload param gets its own multipart
+				// form section with the section name being the variable name and
+				// section contents being the variable contents.
 				for k, v := range payload {
 					if children, ok := v.(APIParams); ok {
 						for k2, v2 := range children {

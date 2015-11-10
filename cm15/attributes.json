@@ -133,6 +133,7 @@
 	"server_tag_scope": "string",
 	"short_description": "string",
 	"size": "string",
+	"size#RightScriptAttachments": "int",
 	"size#Volumes": "int",
 	"source": "string",
 	"source_info_summary": "string",

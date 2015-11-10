@@ -9154,7 +9154,7 @@ type RightScriptAttachment struct {
 	Id        string              `json:"id,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
 	Name      string              `json:"name,omitempty"`
-	Size      string              `json:"size,omitempty"`
+	Size      int                 `json:"size,omitempty"`
 	UpdatedAt *RubyTime           `json:"updated_at,omitempty"`
 }
 
