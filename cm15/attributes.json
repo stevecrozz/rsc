@@ -62,6 +62,7 @@
 	"icmp_type": "string",
 	"id": "string",
 	"id#Cookbooks": "int",
+	"id#RightScriptAttachments": "int",
 	"image_type": "string",
 	"inherited_sources": "map[string]string",
 	"inputs": "[]map[string]string",
