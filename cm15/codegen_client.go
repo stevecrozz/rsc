@@ -9151,10 +9151,10 @@ func (loc *RightScriptLocator) UpdateSource() error {
 type RightScriptAttachment struct {
 	CreatedAt *RubyTime           `json:"created_at,omitempty"`
 	Digest    string              `json:"digest,omitempty"`
-	Id        int                 `json:"id,omitempty"`
+	Id        string              `json:"id,omitempty"`
 	Links     []map[string]string `json:"links,omitempty"`
 	Name      string              `json:"name,omitempty"`
-	Size      int                 `json:"size,omitempty"`
+	Size      string              `json:"size,omitempty"`
 	UpdatedAt *RubyTime           `json:"updated_at,omitempty"`
 }
 
