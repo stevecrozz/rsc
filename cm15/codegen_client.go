@@ -14407,6 +14407,11 @@ type ElasticityParams struct {
 	Schedule            []*Schedule          `json:"schedule,omitempty"`
 }
 
+type Features struct {
+	Automation string `json:"automation,omitempty"`
+	Monitoring string `json:"monitoring,omitempty"`
+}
+
 type InstanceParam struct {
 	AssociatePublicIpAddress string                   `json:"associate_public_ip_address,omitempty"`
 	CloudSpecificAttributes  *CloudSpecificAttributes `json:"cloud_specific_attributes,omitempty"`
@@ -14429,6 +14434,7 @@ type InstanceParam2 struct {
 	CloudSpecificAttributes  *CloudSpecificAttributes2 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
 	DeploymentHref           string                    `json:"deployment_href,omitempty"`
+	Features                 *Features                 `json:"features,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
 	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
 	IpForwardingEnabled      string                    `json:"ip_forwarding_enabled,omitempty"`
@@ -14468,6 +14474,7 @@ type InstanceParam4 struct {
 	CloudHref                string                    `json:"cloud_href,omitempty"`
 	CloudSpecificAttributes  *CloudSpecificAttributes4 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
+	Features                 *Features                 `json:"features,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
 	Inputs                   map[string]interface{}    `json:"inputs,omitempty"`
 	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
@@ -14484,6 +14491,7 @@ type InstanceParam4 struct {
 }
 
 type InstanceParam5 struct {
+	Features            *Features              `json:"features,omitempty"`
 	Href                string                 `json:"href,omitempty"`
 	Inputs              map[string]interface{} `json:"inputs,omitempty"`
 	MultiCloudImageHref string                 `json:"multi_cloud_image_href,omitempty"`

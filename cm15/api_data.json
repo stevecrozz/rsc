@@ -9104,6 +9104,31 @@
             "class": "Enumerable",
             "non_blank": true
           },
+          "server[instance][features][automation]": {
+            "class": "String",
+            "description": "Enables running of automation.",
+            "mandatory": false,
+            "valid_values": [
+              "true",
+              "false"
+            ],
+            "non_blank": true
+          },
+          "server[instance][features][monitoring]": {
+            "class": "String",
+            "description": "Allow sending of monitoring data.",
+            "mandatory": false,
+            "valid_values": [
+              "true",
+              "false"
+            ],
+            "non_blank": true
+          },
+          "server[instance][features]": {
+            "class": "Hash",
+            "mandatory": false,
+            "non_blank": true
+          },
           "server[name]": {
             "class": "String",
             "description": "The name of the Server.",
@@ -9197,6 +9222,31 @@
               "true",
               "false"
             ],
+            "non_blank": true
+          },
+          "server[instance][features][automation]": {
+            "class": "String",
+            "description": "Enables running of automation.",
+            "mandatory": false,
+            "valid_values": [
+              "true",
+              "false"
+            ],
+            "non_blank": true
+          },
+          "server[instance][features][monitoring]": {
+            "class": "String",
+            "description": "Allow sending of monitoring data.",
+            "mandatory": false,
+            "valid_values": [
+              "true",
+              "false"
+            ],
+            "non_blank": true
+          },
+          "server[instance][features]": {
+            "class": "Hash",
+            "mandatory": false,
             "non_blank": true
           },
           "server[instance][cloud_specific_attributes][iam_instance_profile]": {
@@ -10823,6 +10873,31 @@
           "instance[image_href]": {
             "class": "String",
             "description": "The href of the updated Image for the Instance.",
+            "non_blank": true
+          },
+          "instance[features][automation]": {
+            "class": "String",
+            "description": "Enables running of automation.",
+            "mandatory": false,
+            "valid_values": [
+              "true",
+              "false"
+            ],
+            "non_blank": true
+          },
+          "instance[features][monitoring]": {
+            "class": "String",
+            "description": "Allow sending of monitoring data.",
+            "mandatory": false,
+            "valid_values": [
+              "true",
+              "false"
+            ],
+            "non_blank": true
+          },
+          "instance[features]": {
+            "class": "Hash",
+            "mandatory": false,
             "non_blank": true
           },
           "instance[cloud_specific_attributes][automatic_instance_store_mapping]": {
