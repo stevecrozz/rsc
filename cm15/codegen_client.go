@@ -14454,6 +14454,7 @@ type InstanceParam3 struct {
 	CloudHref                string                    `json:"cloud_href,omitempty"`
 	CloudSpecificAttributes  *CloudSpecificAttributes3 `json:"cloud_specific_attributes,omitempty"`
 	DatacenterHref           string                    `json:"datacenter_href,omitempty"`
+	Features                 *Features                 `json:"features,omitempty"`
 	ImageHref                string                    `json:"image_href,omitempty"`
 	Inputs                   map[string]interface{}    `json:"inputs,omitempty"`
 	InstanceTypeHref         string                    `json:"instance_type_href,omitempty"`
