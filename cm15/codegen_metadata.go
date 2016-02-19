@@ -8919,7 +8919,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "full"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -9107,8 +9107,28 @@ Required parameters:
 						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)/attachments/([^/]+)$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "full"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "full"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -9162,14 +9182,16 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "full"},
 					},
 				},
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single RightScript attachment.`,
+				Name: "show",
+				Description: `Displays information about a single RightScript attachment.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",

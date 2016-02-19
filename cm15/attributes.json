@@ -51,6 +51,7 @@
 	"escalation_name": "string",
 	"fetch_status": "string",
 	"file": "string",
+	"filename": "string",
 	"first_name": "string",
 	"from_master": "bool",
 	"graph_href": "string",

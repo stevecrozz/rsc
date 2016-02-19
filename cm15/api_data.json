@@ -9764,7 +9764,8 @@
             "class": "String",
             "non_blank": true,
             "valid_values": [
-              "default"
+              "default", 
+              "full"
             ]
           },
           "filter": {
@@ -9787,6 +9788,14 @@
         "description": "Displays information about a single RightScript attachment.\n",
         "status_code": "200 OK",
         "parameters": {
+          "view": {
+            "class": "String",
+            "non_blank": true,
+            "valid_values": [
+              "default", 
+              "full"
+            ]
+          }
         }
       },
       "update": {
@@ -9820,11 +9829,12 @@
       "description": "RightScript attachments.\n\n",
       "attributes": {
         "id": "ID of the RightScript attachment",
-        "name": "Name of the RightScript attachment",
+        "filename": "File name of the RightScript attachment",
         "created_at": "Time when the RightScript attachment was created",
         "updated_at": "Time when the RightScript attachment was last updated",
         "digest": "MD5 checksum of the RightScript attachment",
         "size": "Size of the RightScript attachment",
+        "download_url": "Temporary authenticated URL to download the attachment",
         "links": ""
       },
       "links": {

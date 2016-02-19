@@ -9149,13 +9149,14 @@ func (loc *RightScriptLocator) UpdateSource() error {
 /******  RightScriptAttachment ******/
 
 type RightScriptAttachment struct {
-	CreatedAt *RubyTime           `json:"created_at,omitempty"`
-	Digest    string              `json:"digest,omitempty"`
-	Id        string              `json:"id,omitempty"`
-	Links     []map[string]string `json:"links,omitempty"`
-	Name      string              `json:"name,omitempty"`
-	Size      string              `json:"size,omitempty"`
-	UpdatedAt *RubyTime           `json:"updated_at,omitempty"`
+	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
+	Digest      string              `json:"digest,omitempty"`
+	DownloadUrl string              `json:"download_url,omitempty"`
+	Filename    string              `json:"filename,omitempty"`
+	Id          string              `json:"id,omitempty"`
+	Links       []map[string]string `json:"links,omitempty"`
+	Size        string              `json:"size,omitempty"`
+	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -9308,9 +9309,16 @@ func (loc *RightScriptAttachmentLocator) Index(options rsapi.APIParams) ([]*Righ
 // GET /api/right_scripts/:right_script_id/attachments/:id
 //
 // Displays information about a single RightScript attachment.
-func (loc *RightScriptAttachmentLocator) Show() (*RightScriptAttachment, error) {
+// Optional parameters:
+// view
+func (loc *RightScriptAttachmentLocator) Show(options rsapi.APIParams) (*RightScriptAttachment, error) {
 	var res *RightScriptAttachment
 	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("RightScriptAttachment", "show")
 	if err != nil {
