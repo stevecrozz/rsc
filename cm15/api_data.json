@@ -9705,6 +9705,7 @@
         "id": "",
         "name": "",
         "description": "",
+        "inputs": "",
         "created_at": "",
         "updated_at": "",
         "links": "",
@@ -9736,7 +9737,7 @@
             "non_blank": true,
             "mandatory": true
           },
-          "right_script_attachment[name]": {
+          "right_script_attachment[filename]": {
             "class": "String",
             "non_blank": true,
             "mandatory": true,
@@ -9782,9 +9783,9 @@
           }
         },
         "filters": {
-          "name": {
+          "filename": {
             "partial_match": true,
-            "description": "Name of the RightScript attachment to filter on."
+            "description": "File name of the RightScript attachment to filter on."
           }
         }
       },
@@ -9819,7 +9820,7 @@
             "non_blank": true,
             "mandatory": true
           },
-          "right_script_attachment[name]": {
+          "right_script_attachment[filename]": {
             "class": "String",
             "non_blank": true,
             "description": "The new name for the RightScript attachment."

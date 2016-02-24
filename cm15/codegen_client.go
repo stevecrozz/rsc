@@ -8838,15 +8838,16 @@ func (loc *RepositoryAssetLocator) Show(options rsapi.APIParams) (*RepositoryAss
 // "lineage" attribute (NOTE: This attribute is merely a string to locate
 // all revisions of a RightScript and NOT a working URL).
 type RightScript struct {
-	CreatedAt   *RubyTime           `json:"created_at,omitempty"`
-	Description string              `json:"description,omitempty"`
-	Id          string              `json:"id,omitempty"`
-	Lineage     string              `json:"lineage,omitempty"`
-	Links       []map[string]string `json:"links,omitempty"`
-	Name        string              `json:"name,omitempty"`
-	Revision    int                 `json:"revision,omitempty"`
-	Source      string              `json:"source,omitempty"`
-	UpdatedAt   *RubyTime           `json:"updated_at,omitempty"`
+	CreatedAt   *RubyTime                `json:"created_at,omitempty"`
+	Description string                   `json:"description,omitempty"`
+	Id          string                   `json:"id,omitempty"`
+	Inputs      []map[string]interface{} `json:"inputs,omitempty"`
+	Lineage     string                   `json:"lineage,omitempty"`
+	Links       []map[string]string      `json:"links,omitempty"`
+	Name        string                   `json:"name,omitempty"`
+	Revision    int                      `json:"revision,omitempty"`
+	Source      string                   `json:"source,omitempty"`
+	UpdatedAt   *RubyTime                `json:"updated_at,omitempty"`
 }
 
 // Locator returns a locator for the given resource
@@ -14944,8 +14945,8 @@ type RepositoryParam2 struct {
 }
 
 type RightScriptAttachmentParam struct {
-	Content *rsapi.FileUpload `json:"content,omitempty"`
-	Name    string            `json:"name,omitempty"`
+	Content  *rsapi.FileUpload `json:"content,omitempty"`
+	Filename string            `json:"filename,omitempty"`
 }
 
 type RightScriptParam struct {

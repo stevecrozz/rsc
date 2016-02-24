@@ -8919,7 +8919,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default", "full"},
+						ValidValues: []string{"default"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -9071,10 +9071,15 @@ Required parameters:
 				APIParams:    []*metadata.ActionParam{},
 			},
 		},
+		Links: map[string]string{
+			"self":   "Href of itself",
+			"source": "Returns the RightScript source",
+		},
 	},
 	"RightScriptAttachment": &metadata.Resource{
 		Name:        "RightScriptAttachment",
 		Description: ``,
+		Identifier:  "application/vnd.rightscale.right_script_attachment",
 		Actions: []*metadata.Action{
 			&metadata.Action{
 				Name: "create",
@@ -9090,17 +9095,17 @@ Required parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "right_script_attachment[content]",
-						Description: `The content of the RightScript attachment to be created.`,
-						Type:        "file",
+						Name:        "right_script_attachment[filename]",
+						Description: `The file name of the RightScript attachment to be created.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "right_script_attachment[name]",
-						Description: `The file name of the RightScript attachment to be created.`,
-						Type:        "string",
+						Name:        "right_script_attachment[content]",
+						Description: `The content of the RightScript attachment to be created.`,
+						Type:        "file",
 						Location:    metadata.PayloadParam,
 						Mandatory:   true,
 						NonBlank:    true,
@@ -9129,28 +9134,8 @@ Required parameters:
 						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)/attachments/([^/]+)$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "full"},
-					},
-				},
-				APIParams: []*metadata.ActionParam{
-					&metadata.ActionParam{
-						Name:        "view",
-						Description: ``,
-						Type:        "string",
-						Location:    metadata.QueryParam,
-						Mandatory:   false,
-						NonBlank:    true,
-						ValidValues: []string{"default", "full"},
-					},
-				},
+				CommandFlags: []*metadata.ActionParam{},
+				APIParams:    []*metadata.ActionParam{},
 			},
 
 			&metadata.Action{
@@ -9175,7 +9160,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"name"},
+						ValidValues: []string{"filename"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -9184,7 +9169,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"default"},
+						ValidValues: []string{"default", "full"},
 					},
 				},
 				APIParams: []*metadata.ActionParam{
@@ -9195,7 +9180,7 @@ Optional parameters:
 						Location:    metadata.QueryParam,
 						Mandatory:   false,
 						NonBlank:    true,
-						ValidValues: []string{"name"},
+						ValidValues: []string{"filename"},
 					},
 					&metadata.ActionParam{
 						Name:        "view",
@@ -9222,8 +9207,28 @@ Optional parameters:
 						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)/attachments/([^/]+)$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "full"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "full"},
+					},
+				},
 			},
 
 			&metadata.Action{
@@ -9240,17 +9245,17 @@ Optional parameters:
 				},
 				CommandFlags: []*metadata.ActionParam{
 					&metadata.ActionParam{
-						Name:        "right_script_attachment[content]",
-						Description: `The new content for the RightScript attachment.`,
-						Type:        "file",
+						Name:        "right_script_attachment[filename]",
+						Description: `The new name for the RightScript attachment.`,
+						Type:        "string",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
 					},
 					&metadata.ActionParam{
-						Name:        "right_script_attachment[name]",
-						Description: `The new name for the RightScript attachment.`,
-						Type:        "string",
+						Name:        "right_script_attachment[content]",
+						Description: `The new content for the RightScript attachment.`,
+						Type:        "file",
 						Location:    metadata.PayloadParam,
 						Mandatory:   false,
 						NonBlank:    true,
@@ -9269,8 +9274,8 @@ Optional parameters:
 			},
 		},
 		Links: map[string]string{
-			"self":   "Href of itself",
-			"source": "Returns the RightScript source",
+			"right_script": "The RightScript to which the attachment is attached",
+			"self":         "Href of itself",
 		},
 	},
 	"Route": &metadata.Resource{
