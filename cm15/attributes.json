@@ -66,6 +66,7 @@
 	"image_type": "string",
 	"inherited_sources": "map[string]string",
 	"inputs": "[]map[string]string",
+	"inputs#RightScripts": "[]map[string]interface{}",
 	"instance_tenancy": "string",
 	"instances_count": "int",
 	"iops": "string",

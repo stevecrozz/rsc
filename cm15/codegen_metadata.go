@@ -8954,8 +8954,10 @@ Optional parameters:
 			},
 
 			&metadata.Action{
-				Name:        "show",
-				Description: `Displays information about a single RightScript.`,
+				Name: "show",
+				Description: `Displays information about a single RightScript.
+Optional parameters:
+	view`,
 				PathPatterns: []*metadata.PathPattern{
 					&metadata.PathPattern{
 						HTTPMethod: "GET",
@@ -8964,8 +8966,28 @@ Optional parameters:
 						Regexp:     regexp.MustCompile(`^/api/right_scripts/([^/]+)$`),
 					},
 				},
-				CommandFlags: []*metadata.ActionParam{},
-				APIParams:    []*metadata.ActionParam{},
+				CommandFlags: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "inputs_2_0"},
+					},
+				},
+				APIParams: []*metadata.ActionParam{
+					&metadata.ActionParam{
+						Name:        "view",
+						Description: ``,
+						Type:        "string",
+						Location:    metadata.QueryParam,
+						Mandatory:   false,
+						NonBlank:    true,
+						ValidValues: []string{"default", "inputs_2_0"},
+					},
+				},
 			},
 
 			&metadata.Action{

@@ -9624,6 +9624,14 @@
         "description": "Displays information about a single RightScript.\n",
         "status_code": "200 OK",
         "parameters": {
+          "view": {
+            "class": "String",
+            "non_blank": true,
+            "valid_values": [
+              "default", 
+              "inputs_2_0"
+            ]
+          }
         },
         "example_resource": {
           "id": "22",

@@ -9014,9 +9014,16 @@ func (loc *RightScriptLocator) Index(options rsapi.APIParams) ([]*RightScript, e
 // GET /api/right_scripts/:id
 //
 // Displays information about a single RightScript.
-func (loc *RightScriptLocator) Show() (*RightScript, error) {
+// Optional parameters:
+// view
+func (loc *RightScriptLocator) Show(options rsapi.APIParams) (*RightScript, error) {
 	var res *RightScript
 	var params rsapi.APIParams
+	params = rsapi.APIParams{}
+	var viewOpt = options["view"]
+	if viewOpt != nil {
+		params["view"] = viewOpt
+	}
 	var p rsapi.APIParams
 	uri, err := loc.ActionPath("RightScript", "show")
 	if err != nil {
